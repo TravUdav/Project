@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Панель администратора</title>
+    <link rel="stylesheet" href="/css/admin_panel.css" />
+  </head>
+  <body>
+    <%-include('navigation_panel.ejs') %>
+    <div class="admin-panel">
+      <button onclick="location.href='/add_film'">Добавить фильм</button>
+      <button onclick="location.href='/edit_film'">Редактировать фильм</button>
+      <button onclick="location.href='/delete_film'">Удалить фильм</button>
+      <button onclick="location.href='/admin_panel'">Вернуться в панель</button>
+    </div>
+
+    <div class="films-table">
+      <h2>Таблица фильмов</h2>
+      <% if (action !== 'add') { %>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Постер</th>
+            <th>Дата выпуска</th>
+            <th>Жанр</th>
+            <th>Аннотация</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% films.forEach(film => { %>
+          <tr>
+            <td><%= film.id %></td>
+            <td><%= film.name %></td>
+            <td>
+              <img src="/img/<%= film.poster %>" alt="<%= film.name %> poster"/>
+            </td>
+            <td><%= film.release %></td>
+            <td><%= film.genre %></td>
+            <td><%= film.annotation %></td>
+            <td>
+              <% if (action === 'edit') { %>
+                <form action="/edit_film/<%= film.id %>" method="get">
+                  <!-- <button type="submit">Редактировать</button> -->
+                  <a href="/edit_film/<%= film.id %>">Редактировать</a>
+                </form>
+                <% } else if (action === 'delete') { %>
+                <form action="/delete/<%= film.id %>" method="post">
+                  <button type="submit">Удалить</button>
+                </form>
+                <% } %>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Постер</th>
+            <th>Дата выпуска</th>
+            <th>Жанр</th>
+            <th>Аннотация</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% films.forEach(film => { %>
+          <tr>
+            <td><%= film.id %></td>
+            <td><%= film.name %></td>
+            <td>
+              <img
+                src="/img/<%= film.poster %>"
+                alt="<%= film.name %> poster"
+              />
+            </td>
+            <td><%= film.release %></td>
+            <td><%= film.genre %></td>
+            <td><%= film.annotation %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <form
+        class="adding"
+        action="/add"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <label for="name">Название:</label>
+        <input type="text" id="name" name="name" required /><br />
+        <label for="poster">Постер:</label>
+        <input type="file" id="poster" name="poster" required /><br />
+        <label for="release">Релиз:</label>
+        <input type="text" id="release" name="release" required /><br />
+        <label for="genre">Жанр:</label>
+        <input type="text" id="genre" name="genre" required /><br />
+        <label for="annotation">Аннотация:</label>
+        <textarea id="annotation" name="annotation" required></textarea><br />
+        <button type="submit">Добавить</button>
+      </form>
+      <% } %>
+    </div>
+  </body>
+</html>

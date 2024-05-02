@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Результаты поиска</title>
+    <link rel="stylesheet" href="/css/search_results.css" />
+  </head>
+  <body>
+    <%-include('navigation_panel.ejs') %>
+    <h1>Результаты поиска</h1>
+    <div class="results-container">
+      <% if (films.length > 0) { %>
+      <ul class="films-list">
+        <% films.forEach(film => { %>
+        <li class="film-item">
+          <a href="/film_page?film_id=<%= film.id %>">
+            <img
+              src="/img/<%= film.poster %>"
+              alt="<%= film.name %> poster"
+              class="film-poster"
+            />
+            <p class="film-details"><%= film.name %> (<%= film.release %>)</p>
+          </a>
+        </li>
+        <% }); %>
+      </ul>
+      <% } else { %>
+      <p>Не найдено ничего похожего :(</p>
+      <% } %>
+    </div>
+  </body>
+</html>

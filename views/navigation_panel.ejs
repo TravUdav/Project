@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Навигационная панель</title>
+    <link rel="stylesheet" href="/css/osnova.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo" id="kinowiki-logo">Kinowiki</div>
+      <nav>
+        <ul>
+          <li><a href="/">Главная</a></li>
+          <li class="search-container">
+            <form id="searchForm" action="/search" method="POST">
+              <input
+                id="searchInput"
+                type="text"
+                name="query"
+                placeholder="Поиск фильма..."
+              />
+              <button
+                id="searchButton"
+                type="submit"
+                class="search-button"
+                disabled
+              >
+                Искать
+              </button>
+            </form>
+          </li>
+        </ul>
+      </nav>
+      <div class="user-section">
+        <nav>
+          <ul>
+            <li><a href="/feedback">Обратная связь</a></li>
+            <% if (isLoggedIn) { %>
+            <li><a href="/profile">Профиль</a></li>
+            <li><a href="/logout">Выход</a></li>
+            <% } else { %>
+            <li><a href="/entry">Профиль</a></li>
+            <li><a href="/entry">Вход</a></li>
+            <% } %>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <script>
+      const searchInput = document.getElementById("searchInput");
+      const searchButton = document.getElementById("searchButton");
+
+      searchInput.addEventListener("input", function () {
+        if (searchInput.value.trim() !== "") {
+          searchButton.disabled = false;
+        } else {
+          searchButton.disabled = true;
+        }
+      });
+    </script>
+  </body>
+</html>

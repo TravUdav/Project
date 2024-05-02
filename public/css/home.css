@@ -1,0 +1,64 @@
+.posters-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.posters-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.film-link {
+  text-decoration: none;
+  color: white;
+}
+
+.poster-item {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.poster-item img {
+  width: 200px;
+  height: auto;
+}
+
+.poster-item p {
+  margin-top: 5px;
+}
+
+.filter-container {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-container label {
+  margin-right: 10px;
+  color: #fff;
+}
+
+.filter-container input[type="number"] {
+  width: 80px;
+  padding: 8px;
+  font-style: italic;
+  margin-right: 10px;
+}
+
+.filter-container button {
+  background-color: #333;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.filter-container button:hover {
+  background-color: #555;
+}

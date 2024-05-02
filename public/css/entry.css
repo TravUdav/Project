@@ -1,0 +1,74 @@
+#loginBlock,
+#registrationBlock,
+#successMessage {
+  margin-top: 4px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#loginBlock label,
+#registrationBlock label,
+#successMessage label {
+  display: block;
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+#loginBlock input[type="text"],
+#loginBlock input[type="password"],
+#registrationBlock input[type="text"],
+#registrationBlock input[type="password"],
+#registrationBlock input[type="date"] {
+  width: 200px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+#loginButton,
+#registrationButton {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+#loginButton:hover,
+#registrationButton:hover {
+  background-color: #555;
+}
+
+#registrationLink,
+#loginLink {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+#registrationLink a,
+#loginLink a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+#registrationLink a:hover,
+#loginLink a:hover {
+  text-decoration: underline;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #cdcdcd88;
+  border-radius: 10px;
+  box-sizing: border-box;
+  width: fit-content;
+}

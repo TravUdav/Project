@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Главная</title>
+    <link rel="stylesheet" href="/css/home.css" />
+  </head>
+  <body>
+    <%-include('navigation_panel.ejs') %> <%-
+    include('../public/html/greetings.html') %>
+
+    <div class="filter-container">
+      <label for="releaseYear">Фильтр по году выпуска:</label>
+      <input
+        type="number"
+        id="releaseYear"
+        name="releaseYear"
+        min="1900"
+        max="2024"
+        oninput="checkInput()"
+      />
+      <button onclick="filterFilms()" id="applyButton" disabled>
+        Применить фильтр
+      </button>
+      <button onclick="resetFilter()" id="resetButton" style="display: none">
+        Сбросить фильтр
+      </button>
+    </div>
+
+    <div class="posters-container">
+      <ul class="posters-list">
+        <% films.forEach(film => { %>
+        <a href="/film_page?film_id=<%= film.id %>" class="film-link">
+          <li class="poster-item" data-release="<%= film.release %>">
+            <img src="/img/<%= film.poster %>" alt="<%= film.name %> poster" />
+            <p><%= film.name %> (<%= film.release %>)</p>
+          </li>
+        </a>
+        <% }); %>
+      </ul>
+    </div>
+
+    <div
+      id="noFilmsMessage"
+      style="display: none; color: #fff; text-align: center"
+    >
+      Нет фильмов с этим годом выпуска :(
+    </div>
+
+    <script>
+      function checkInput() {
+        const releaseYearInput = document.getElementById("releaseYear");
+        const applyButton = document.getElementById("applyButton");
+
+        if (releaseYearInput.value.trim() === "") {
+          applyButton.disabled = true;
+        } else {
+          applyButton.disabled = false;
+        }
+      }
+
+      function filterFilms() {
+        const releaseYearInput = document.getElementById("releaseYear");
+        const releaseYear = releaseYearInput.value;
+        const posters = document.querySelectorAll(".poster-item");
+        const resetButton = document.getElementById("resetButton");
+        const noFilmsMessage = document.getElementById("noFilmsMessage");
+        let hasFilms = false;
+
+        posters.forEach((poster) => {
+          const posterReleaseYear = poster.getAttribute("data-release");
+          if (posterReleaseYear === releaseYear) {
+            poster.style.display = "block";
+            poster.style.cssText = "float: none;";
+            hasFilms = true;
+          } else {
+            poster.style.display = "none";
+          }
+        });
+
+        if (hasFilms) {
+          noFilmsMessage.style.display = "none";
+        } else {
+          noFilmsMessage.style.display = "block";
+        }
+
+        resetButton.style.display = "inline-block";
+      }
+
+      function resetFilter() {
+        const releaseYearInput = document.getElementById("releaseYear");
+        const posters = document.querySelectorAll(".poster-item");
+        const resetButton = document.getElementById("resetButton");
+        const noFilmsMessage = document.getElementById("noFilmsMessage");
+
+        releaseYearInput.value = "";
+
+        posters.forEach((poster) => {
+          poster.style.display = "block";
+          poster.style.cssText = "float: none;";
+        });
+
+        resetButton.style.display = "none";
+        noFilmsMessage.style.display = "none";
+
+        checkInput();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+.results-container {
+  text-align: center;
+}
+
+.films-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.film-item {
+  display: inline-block;
+  margin: 20px;
+}
+.film-item a {
+  text-decoration: none;
+}
+
+.film-poster {
+  max-width: 300px;
+  height: auto;
+}
+
+.film-details {
+  margin-top: 5px;
+  color: white;
+}
+
+h1 {
+  text-align: center;
+}

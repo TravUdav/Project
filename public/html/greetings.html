@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Greetings</title>
+    <link rel="stylesheet" href="/css/greetings.css" />
+  </head>
+  <body>
+    <div class="container" id="container">
+      <span class="toggle-button" onclick="toggleContent()">Скрыть</span>
+      <div class="content">
+        <p>Сайт для киноманов: найди здесь подробную информацию о фильмах!</p>
+      </div>
+    </div>
+    <script>
+      function toggleContent() {
+        var container = document.getElementById("container");
+        container.classList.toggle("hidden");
+        var button = document.querySelector(".toggle-button");
+        if (container.classList.contains("hidden")) {
+          button.textContent = "Раскрыть";
+        } else {
+          button.textContent = "Скрыть";
+        }
+      }
+    </script>
+  </body>
+</html>

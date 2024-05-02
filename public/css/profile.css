@@ -1,0 +1,45 @@
+main {
+  padding: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 1300px;
+}
+
+.profile {
+  text-align: center;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.avatar img {
+  width: 100%;
+  height: auto;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.upload-button {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.upload-button:hover {
+  background-color: #555;
+}

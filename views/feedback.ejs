@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Обратная связь</title>
+    <link rel="stylesheet" href="/css/feedback.css" />
+  </head>
+  <body>
+    <%-include('navigation_panel.ejs') %>
+    <h1>Обратная связь</h1>
+    <div>
+      Если вы хотите предложить добавить новый фильм или <br />
+      связаться с нами еще по какому-нибудь вопросу, заполните данную форму!
+    </div>
+    <% if (successMessage) { %>
+    <p><%= successMessage %></p>
+    <% } else { %>
+    <div class="block">
+      <form id="feedbackForm" action="/submit_feedback" method="POST">
+        <label for="name">Имя</label><br />
+        <input type="text" id="name" name="name" /><br />
+        <label for="email">Почта</label><br />
+        <input type="email" id="email" name="email" /><br />
+        <label for="message">Сообщение</label><br />
+        <textarea id="message" name="message"></textarea><br />
+        <button type="submit" id="submitButton" disabled>Отправить</button>
+      </form>
+    </div>
+    <script>
+      const nameInput = document.getElementById("name");
+      const emailInput = document.getElementById("email");
+      const messageInput = document.getElementById("message");
+      const submitButton = document.getElementById("submitButton");
+
+      function checkInputs() {
+        const nameValue = nameInput.value.trim();
+        const emailValue = emailInput.value.trim();
+        const messageValue = messageInput.value.trim();
+
+        if (nameValue !== "" && emailValue !== "" && messageValue !== "") {
+          submitButton.disabled = false;
+        } else {
+          submitButton.disabled = true;
+        }
+      }
+
+      nameInput.addEventListener("input", checkInputs);
+      emailInput.addEventListener("input", checkInputs);
+      messageInput.addEventListener("input", checkInputs);
+    </script>
+    <% } %>
+  </body>
+</html>

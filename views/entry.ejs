@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Вход</title>
+    <script src="js/jq.js"></script>
+    <link rel="stylesheet" href="/css/entry.css" />
+  </head>
+  <body>
+    <%-include('navigation_panel.ejs') %>
+    <div id="loginBlock">
+      <h1>Вход</h1>
+      <% if (error) { %>
+      <p style="color: red"><%= error %></p>
+      <% } %>
+      <form id="loginForm" action="/login" method="POST">
+        <div class="form-group">
+          <input type="text" id="login" name="login" placeholder="Логин" />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Пароль"
+          />
+        </div>
+        <button type="submit" id="loginButton" disabled>Войти</button>
+      </form>
+      <p id="registrationLink">
+        Нет аккаунта? Вы можете
+        <a href="#" id="showRegistration">зарегистрироваться</a>!
+      </p>
+    </div>
+
+    <div id="registrationBlock" style="display: none">
+      <h1>Регистрация</h1>
+      <form id="registrationForm" action="/register" method="POST">
+        <div class="form-group">
+          <input type="text" id="regLogin" name="login" placeholder="Логин" />
+          <p id="error" style="color: red"></p>
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            id="regPassword"
+            name="password"
+            placeholder="Пароль"
+          />
+        </div>
+        <div class="form-group">
+          <input type="text" id="name" name="name" placeholder="Имя" />
+        </div>
+        <div class="form-group">
+          <input
+            type="date"
+            id="birth"
+            name="birth"
+            placeholder="Дата рождения"
+            min="1900-01-01"
+            max="2024-09-09"
+          />
+        </div>
+        <button type="button" id="registrationButton" disabled>
+          Зарегистрироваться
+        </button>
+      </form>
+    </div>
+
+    <div id="successMessage" style="display: none">
+      <p>
+        Вы успешно зарегистрировались!
+        <a href="#" id="loginLink">Войдите в свой аккаунт</a>.
+      </p>
+    </div>
+
+    <script>
+      const loginInput = document.getElementById("login");
+      const passwordInput = document.getElementById("password");
+      const loginButton = document.getElementById("loginButton");
+      const registrationLink = document.getElementById("showRegistration");
+      const loginBlock = document.getElementById("loginBlock");
+      const registrationBlock = document.getElementById("registrationBlock");
+
+      function checkInputs() {
+        const loginValue = loginInput.value.trim();
+        const passwordValue = passwordInput.value.trim();
+
+        loginButton.disabled = !(loginValue && passwordValue);
+      }
+
+      function checkRegistrationInputs() {
+        const regLoginValue = regLoginInput.value.trim();
+        const regPasswordValue = regPasswordInput.value.trim();
+        const nameValue = nameInput.value.trim();
+        const birthValue = birthInput.value.trim();
+
+        registrationButton.disabled = !(
+          regLoginValue &&
+          regPasswordValue &&
+          nameValue &&
+          birthValue
+        );
+      }
+
+      loginInput.addEventListener("input", checkInputs);
+      passwordInput.addEventListener("input", checkInputs);
+
+      registrationLink.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        loginBlock.style.display = "none";
+        registrationBlock.style.display = "block";
+      });
+
+      const regLoginInput = document.getElementById("regLogin");
+      const regPasswordInput = document.getElementById("regPassword");
+      const nameInput = document.getElementById("name");
+      const birthInput = document.getElementById("birth");
+      const registrationButton = document.getElementById("registrationButton");
+
+      regLoginInput.addEventListener("input", checkRegistrationInputs);
+      regPasswordInput.addEventListener("input", checkRegistrationInputs);
+      nameInput.addEventListener("input", checkRegistrationInputs);
+      birthInput.addEventListener("input", checkRegistrationInputs);
+
+      $(document).ready(function () {
+        function showSuccessMessage() {
+          $("#registrationBlock").hide();
+          $("#loginBlock").hide();
+          $("#successMessage").show();
+        }
+
+        function hideSuccessMessage() {
+          $("#successMessage").hide();
+        }
+
+        $("#loginLink").click(function (event) {
+          event.preventDefault();
+          hideSuccessMessage();
+          $("#loginBlock").show();
+        });
+
+        $("#registrationButton").click(function (event) {
+          var formData = $("#registrationForm").serialize();
+
+          $.ajax({
+            type: "POST",
+            url: "/register",
+            data: formData,
+            success: function (response) {
+              console.log(response);
+              if (response.error != null) {
+                console.log("#error");
+                $("#error").text(response.error);
+              } else if (response.successMessage != null) {
+                console.log(response.successMessage);
+                $("#error").text("");
+                showSuccessMessage();
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error("Error:", error);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

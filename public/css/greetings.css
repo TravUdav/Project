@@ -1,0 +1,47 @@
+.search-button:hover {
+  background-color: #555;
+}
+
+.container {
+  width: 300px;
+  min-height: 5px;
+  background-color: #333;
+  border: 2px solid #666;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: height 0.5s, border-radius 0.5s; /* Анимация изменения высоты и скругленных углов */
+  text-align: center; /* Центрируем содержимое контейнера */
+  margin: 0 auto; /* Центрируем контейнер на странице */
+  margin-top: 20px; /* Добавляем отступ сверху */
+  border-radius: 10px; /* Скругляем углы */
+}
+
+.container p {
+  color: #fff; /* Цвет текста внутри контейнера */
+}
+
+.content {
+  display: block;
+}
+
+.hidden .content {
+  display: none; /* Скрываем содержимое при скрытом контейнере */
+}
+
+.hidden {
+  height: 5px;
+  width: 65px; /* Устанавливаем минимальную ширину при скрытии */
+  border-radius: 10px; /* Скругляем углы */
+}
+
+.toggle-button {
+  cursor: pointer;
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Добавленные стили для наведения */
+.toggle-button:hover {
+  color: #888; /* Серый цвет текста при наведении */
+}

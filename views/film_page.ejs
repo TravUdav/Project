@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Информация о фильме</title>
+    <link rel="stylesheet" href="/css/film_page.css" />
+  </head>
+  <body>
+    <%- include('navigation_panel.ejs') %>
+    <div class="film-info">
+      <h1>Информация о фильме</h1>
+      <div class="poster">
+        <img src="/img/<%= film.poster %>" alt="<%= film.name %> poster" />
+      </div>
+      <div class="details">
+        <h2><%= film.name %></h2>
+        <p>Дата выпуска: <%= film.release %></p>
+        <p>Жанр: <%= film.genre %></p>
+        <h3>Аннотация</h3>
+        <p><%= film.annotation %></p>
+      </div>
+    </div>
+  </body>
+</html>
