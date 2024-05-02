@@ -99,7 +99,123 @@ app.get("/profile", (req, res) => {
   }
 });
 
-app.get("/admin_panel", (req, res) => {
+// BY MOTIK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+app.get("/admin", (req, res) => {
+  if (req.session.isLoggedIn) {
+    const userId = req.session.userId;
+    connection.query(
+      "SELECT admin FROM users WHERE id = ?",
+      [userId],
+      (err, results) => {
+        if (err) {
+          console.error("Error fetching user information:", err);
+          return res.status(500).send("Error fetching user information");
+        }
+
+        if (results.length > 0 && results[0].admin === 1) {
+          connection.query("SELECT * FROM films", (err, films) => {
+            if (err) {
+              console.error("Error fetching films:", err);
+              return res.status(500).send("Error fetching films");
+            }
+
+            const action = req.query.action;
+            const id = req.query.id;
+
+            if (!action) {
+              res.render(path.join(__dirname, "views", "admin.ejs"), {
+                action: "admin",
+                films: films,
+              });
+            }
+
+            if (action === "add") {
+              res.render(path.join(__dirname, "views", "admin_add.ejs"), {
+                films: films,
+              });
+            }
+
+            if (action === "edit") {
+              res.render(path.join(__dirname, "views", "admin_edit.ejs"), {
+                films: films,
+                id: id,
+              });
+            }
+
+            if (action === "delete") {
+              res.render(path.join(__dirname, "views", "admin_delete.ejs"), {
+                films: films,
+                id: id,
+              });
+            }
+
+
+
+          });
+        } else {
+          res.redirect("/");
+        }
+      }
+    );
+  } else {
+    res.redirect("/entry");
+  }
+});
+
+app.post("/add", upload.single("poster"), (req, res) => {
+  const { name, release, genre, annotation } = req.body;
+  const poster = req.file.filename;
+
+  connection.query(
+    "INSERT INTO films (name, poster, `release`, genre, annotation) VALUES (?, ?, ?, ?, ?)",
+    [name, poster, release, genre, annotation],
+    (err, result) => {
+      if (err) {
+        console.error("Error adding film:", err);
+        return res.status(500).send("Ошибка при добавлении фильма.");
+      }
+      res.sendStatus(200);
+    }
+  );
+});
+
+app.put("/edit", upload.single("poster"), (req, res) => {
+  const { name, release, genre, annotation, id } = req.body;
+  const poster = req.file.filename;
+
+  connection.query(
+    "UPDATE films SET name = ?, poster = ?, `release` = ?, genre = ?, annotation = ? WHERE id = ?",
+    [name, poster, release, genre, annotation, id],
+    (err, result) => {
+      if (err) {
+        console.error("Error updating film:", err);
+        return res.status(500).send("Ошибка при обновлении фильма.");
+      }
+      res.sendStatus(200);
+    }
+  );
+});
+
+app.delete("/delete", (req, res) => {
+  const id = req.query.id;
+  console.log(id);
+
+  connection.query(
+    "DELETE FROM films WHERE id = ?",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.error("Error deleting film:", err);
+        return res.status(500).send("Ошибка при удалении фильма.");
+      }
+      res.sendStatus(200);
+    }
+  );
+});
+
+
+/* app.get("/admin_panel", (req, res) => {
   if (req.session.isLoggedIn) {
     const userId = req.session.userId;
     connection.query(
@@ -222,7 +338,7 @@ app.post("/delete/:id", (req, res) => {
       res.redirect("/delete_film");
     }
   );
-});
+}); */
 
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Панель администратора</title>
+		<link
+			rel="stylesheet"
+			href="/css/admin_panel.css"
+		/>
+	</head>
+	<body>
+		<%-include('navigation_panel.ejs') %>
+		<div class="admin-panel">
+			<button onclick="location.href='/admin'">Вернуться в панель</button>
+		</div>
+
+		<div class="films-table">
+			<% if (!id) { %>
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Название</th>
+						<th>Постер</th>
+						<th>Дата выпуска</th>
+						<th>Жанр</th>
+						<th>Аннотация</th>
+						<th>Действия</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% films.forEach(film => { %>
+					<tr>
+						<td><%= film.id %></td>
+						<td><%= film.name %></td>
+						<td>
+							<img
+								src="/img/<%= film.poster %>"
+								alt="<%= film.name %> poster"
+							/>
+						</td>
+						<td><%= film.release %></td>
+						<td><%= film.genre %></td>
+						<td><%= film.annotation %></td>
+						<td>
+							<button
+								onclick="location.href='/admin?action=delete&id=<%= film.id %>'"
+							>
+								Удалить
+							</button>
+						</td>
+					</tr>
+					<% }); %>
+				</tbody>
+			</table>
+			<% } else { const film = films.find(film => film.id == id); %>
+			<h2>Вы хотите удалить этот фильм?</h2>
+			<form class="adding">
+				<input
+					name="id"
+					value="<%= film.id %>"
+					hidden
+					id="id"
+				/>
+				<label for="name">Название:</label>
+				<input
+					type="text"
+					id="name"
+					name="name"
+					required
+					value="<%= film.name %>"
+					disabled
+				/><br />
+				<label for="release">Релиз:</label>
+				<input
+					type="text"
+					id="release"
+					name="release"
+					required
+					value="<%= film.release %>"
+					disabled
+				/><br />
+				<label for="genre">Жанр:</label>
+				<input
+					type="text"
+					id="genre"
+					name="genre"
+					value="<%= film.genre %>"
+					required
+					disabled
+				/><br />
+				<label for="annotation">Аннотация:</label>
+				<textarea
+					id="annotation"
+					name="annotation"
+					required
+					disabled
+				>
+<%= film.annotation %>
+                </textarea
+				>
+				<br />
+				<button
+					type="submit"
+					id="add_button"
+				>
+					Удалить
+				</button>
+			</form>
+			<% } %>
+		</div>
+		<script>
+			window.onload = async () => {
+				const form = document.querySelector(".adding");
+				const button = document.getElementById("add_button");
+
+				if (!button) return;
+
+				button.onclick = async (e) => {
+					e.preventDefault();
+					if (!form.checkValidity()) {
+						alert("Заполните все поля");
+						return;
+					}
+
+					const response = await fetch(
+						`/delete?id=${form.querySelector("#id").value}`,
+						{
+							method: "DELETE",
+						}
+					);
+
+					if ((await response.status) == 200) {
+						alert("Фильм удален");
+						form.reset();
+						window.location.href = "/admin";
+					} else {
+						alert("Ошибка");
+					}
+				};
+			};
+		</script>
+	</body>
+</html>

@@ -15,15 +15,11 @@
 	<body>
 		<%-include('navigation_panel.ejs') %>
 		<div class="admin-panel">
-			<button onclick="location.href='/add_film'">Добавить фильм</button>
-			<button onclick="location.href='/edit_film'">Редактировать фильм</button>
-			<button onclick="location.href='/delete_film'">Удалить фильм</button>
-			<button onclick="location.href='/admin_panel'">Вернуться в панель</button>
+			<button onclick="location.href='/admin'">Вернуться в панель</button>
 		</div>
 
 		<div class="films-table">
-			<h2>Таблица фильмов</h2>
-			<% if (action !== 'add') { %>
+			<% if (!id) { %>
 			<table>
 				<thead>
 					<tr>
@@ -51,69 +47,35 @@
 						<td><%= film.genre %></td>
 						<td><%= film.annotation %></td>
 						<td>
-							<% if (action === 'edit') { %>
-							<form
-								action="/edit_film/<%= film.id %>"
-								method="get"
+							<button
+								onclick="location.href='/admin?action=edit&id=<%= film.id %>'"
 							>
-								<!-- <button type="submit">Редактировать</button> -->
-								<a href="/edit_film/<%= film.id %>">Редактировать</a>
-							</form>
-							<% } else if (action === 'delete') { %>
-							<form
-								action="/delete/<%= film.id %>"
-								method="post"
-							>
-								<button type="submit">Удалить</button>
-							</form>
-							<% } %>
+								Редактировать
+							</button>
 						</td>
 					</tr>
 					<% }); %>
 				</tbody>
 			</table>
-			<% } else { %>
-			<table>
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Название</th>
-						<th>Постер</th>
-						<th>Дата выпуска</th>
-						<th>Жанр</th>
-						<th>Аннотация</th>
-					</tr>
-				</thead>
-				<tbody>
-					<% films.forEach(film => { %>
-					<tr>
-						<td><%= film.id %></td>
-						<td><%= film.name %></td>
-						<td>
-							<img
-								src="/img/<%= film.poster %>"
-								alt="<%= film.name %> poster"
-							/>
-						</td>
-						<td><%= film.release %></td>
-						<td><%= film.genre %></td>
-						<td><%= film.annotation %></td>
-					</tr>
-					<% }); %>
-				</tbody>
-			</table>
+			<% } else { const film = films.find(film => film.id == id); %>
 			<form
 				class="adding"
-				action="/add"
-				method="post"
+				action="/edit/<%= id %>"
+				method="put"
 				enctype="multipart/form-data"
 			>
+				<input
+					name="id"
+					value="<%= film.id %>"
+					hidden
+				/>
 				<label for="name">Название:</label>
 				<input
 					type="text"
 					id="name"
 					name="name"
 					required
+					value="<%= film.name %>"
 				/><br />
 				<label for="poster">Постер:</label>
 				<input
@@ -128,12 +90,14 @@
 					id="release"
 					name="release"
 					required
+					value="<%= film.release %>"
 				/><br />
 				<label for="genre">Жанр:</label>
 				<input
 					type="text"
 					id="genre"
 					name="genre"
+					value="<%= film.genre %>"
 					required
 				/><br />
 				<label for="annotation">Аннотация:</label>
@@ -141,11 +105,49 @@
 					id="annotation"
 					name="annotation"
 					required
-				></textarea
-				><br />
-				<button type="submit">Добавить</button>
+				>
+<%= film.annotation %>
+                </textarea
+				>
+				<br />
+				<button
+					type="submit"
+					id="add_button"
+				>
+					Сохранить
+				</button>
 			</form>
 			<% } %>
 		</div>
+		<script>
+			window.onload = async () => {
+				const form = document.querySelector(".adding");
+				const button = document.getElementById("add_button");
+
+				if (!button) return;
+
+				button.onclick = async (e) => {
+					e.preventDefault();
+					if (!form.checkValidity()) {
+						alert("Заполните все поля");
+						return;
+					}
+
+					const formData = new FormData(form);
+					const response = await fetch("/edit", {
+						method: "PUT",
+						body: formData,
+					});
+
+					if ((await response.status) == 200) {
+						alert("Фильм изменен");
+						form.reset();
+						window.location.href = "/admin";
+					} else {
+						alert("Ошибка");
+					}
+				};
+			};
+		</script>
 	</body>
 </html>

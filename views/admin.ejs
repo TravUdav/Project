@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Панель администратора</title>
+		<link
+			rel="stylesheet"
+			href="/css/admin_panel.css"
+		/>
+	</head>
+	<body>
+		<%-include('navigation_panel.ejs') %>
+		<div class="admin-panel">
+			<button onclick="location.href='/admin?action=add'">
+				Добавить фильм
+			</button>
+			<button onclick="location.href='/admin?action=edit'">
+				Редактировать фильм
+			</button>
+			<button onclick="location.href='/admin?action=delete'">
+				Удалить фильм
+			</button>
+		</div>
+
+		<style>
+			.films-table {
+				margin: 4rem;
+			}
+		</style>
+
+		<div class="films-table">
+			<h2>Таблица фильмов</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Название</th>
+						<th>Постер</th>
+						<th>Дата выпуска</th>
+						<th>Жанр</th>
+						<th>Аннотация</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% films.forEach(film => { %>
+					<tr>
+						<td><%= film.id %></td>
+						<td><%= film.name %></td>
+						<td>
+							<img
+								src="/img/<%= film.poster %>"
+								alt="<%= film.name %> poster"
+							/>
+						</td>
+						<td><%= film.release %></td>
+						<td><%= film.genre %></td>
+						<td><%= film.annotation %></td>
+					</tr>
+					<% }); %>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

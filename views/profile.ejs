@@ -1,28 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Профиль</title>
-    <link rel="stylesheet" href="/css/profile.css" />
-  </head>
-  <body>
-    <%-include('navigation_panel.ejs') %>
-    <main>
-      <div class="profile">
-        <h1>Профиль</h1>
-        <div class="avatar">
-          <img id="displayed-avatar" src="/img/default_avatar.jpg" alt="Аватар пользователя"/>
-        </div>
-        <div class="user-info">
-          <p>Имя пользователя: <%= user.name %></p>
-          <p>Логин: <%= user.login %></p>
-          <% if (isAdmin) { %>
-          <a href="/admin_panel" class="admin-panel-link"
-            >Панель администратора</a>
-          <% } %>
-        </div>
-      </div>
-    </main>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Профиль</title>
+		<link
+			rel="stylesheet"
+			href="/css/profile.css"
+		/>
+	</head>
+	<body>
+		<%-include('navigation_panel.ejs') %>
+		<main>
+			<div class="profile">
+				<h1>Профиль</h1>
+				<div class="avatar">
+					<img
+						id="displayed-avatar"
+						src="/img/default_avatar.jpg"
+						alt="Аватар пользователя"
+					/>
+				</div>
+				<div class="user-info">
+					<p>Имя пользователя: <%= user.name %></p>
+					<p>Логин: <%= user.login %></p>
+					<% if (isAdmin) { %>
+					<a
+						href="/admin"
+						class="admin-panel-link"
+						>Панель администратора</a
+					>
+					<% } %>
+				</div>
+			</div>
+		</main>
+	</body>
 </html>

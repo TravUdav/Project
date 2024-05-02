@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Панель администратора</title>
+		<link
+			rel="stylesheet"
+			href="/css/admin_panel.css"
+		/>
+	</head>
+	<body>
+		<%-include('navigation_panel.ejs') %>
+		<div class="admin-panel">
+			<button onclick="location.href='/admin'">Вернуться в панель</button>
+		</div>
+
+		<div class="films-table">
+			<form
+				class="adding"
+				action="/add"
+				method="post"
+				enctype="multipart/form-data"
+			>
+				<label for="name">Название:</label>
+				<input
+					type="text"
+					id="name"
+					name="name"
+					required
+				/><br />
+				<label for="poster">Постер:</label>
+				<input
+					type="file"
+					id="poster"
+					name="poster"
+					required
+				/><br />
+				<label for="release">Релиз:</label>
+				<input
+					type="text"
+					id="release"
+					name="release"
+					required
+				/><br />
+				<label for="genre">Жанр:</label>
+				<input
+					type="text"
+					id="genre"
+					name="genre"
+					required
+				/><br />
+				<label for="annotation">Аннотация:</label>
+				<textarea
+					id="annotation"
+					name="annotation"
+					required
+				></textarea
+				><br />
+				<button
+					type="submit"
+					id="add_button"
+				>
+					Добавить
+				</button>
+			</form>
+		</div>
+		<script>
+			window.onload = async () => {
+				const form = document.querySelector(".adding");
+				const button = document.getElementById("add_button");
+
+				button.onclick = async (e) => {
+					e.preventDefault();
+					if (!form.checkValidity()) {
+						alert("Заполните все поля");
+						return;
+					}
+
+					const formData = new FormData(form);
+					const response = await fetch("/add", {
+						method: "POST",
+						body: formData,
+					});
+
+					if ((await response.status) == 200) {
+						alert("Фильм добавлен");
+						form.reset();
+						window.location.href = "/admin";
+					} else {
+						alert("Ошибка");
+					}
+				};
+			};
+		</script>
+	</body>
+</html>
